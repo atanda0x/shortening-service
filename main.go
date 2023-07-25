@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"time"
@@ -49,7 +49,7 @@ func (driver *DBClient) GetOriginalURL(w http.ResponseWriter, r *http.Request) {
 func (driver *DBClient) GenerateShortURL(w http.ResponseWriter, r *http.Request) {
 	var id int
 	var record Record
-	postBody, _ := ioutil.ReadAll(r.Body)
+	postBody, _ := io.ReadAll(r.Body)
 	json.Unmarshal(postBody, &record)
 	err := driver.db.QueryRow("INSERT INTO web_url(url) VALUES($1) RETURNING id", record.URL).Scan(&id)
 	responseMap := map[string]interface{}{"encoded_string": base62.ToBase62(id)}
@@ -76,7 +76,7 @@ func main() {
 	r.HandleFunc("/v1/short", dbclient.GenerateShortURL).Methods("POST")
 	srv := &http.Server{
 		Handler: r,
-		Addr:    "127.0.0.1:8000",
+		Addr:    "127.0.0.1:9000",
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

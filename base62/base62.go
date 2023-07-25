@@ -33,3 +33,12 @@ func ToBase10(str string) int {
 	}
 	return res
 }
+
+// curl -X POST \
+//  http://localhost:9000/v1/short \
+//  -H 'cache-control: no-cache' \
+//  -H 'content-type: application/json' \
+//  -d '{
+//  "url":
+// "https://www.dropbox.com/scl/fi/9fgfciz4wdowwqm979rv8/How-to-Build-Performant-Servers-with-GRPC-and-Protocol-Buffers.paper?rlkey=130ljrh24zgp9zcbjsawzyemh&dl=0"
+// }'
